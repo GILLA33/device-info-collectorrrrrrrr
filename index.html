@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Device Information Collector</title>
+</head>
+<body>
+    <h1>Loading...</h1>
+    <script>
+        // Collecting IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ipAddress = data.ip;
+                console.log('IP Address:', ipAddress);
+                sendInfo(ipAddress);
+            });
+
+        // Function to send information to your server
+        function sendInfo(ipAddress) {
+            fetch('https://yourserver.com/collect', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ipAddress: ipAddress,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    platform: navigator.platform,
+                    // Add other details as needed
+                }),
+            })
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
+        }
+    </script>
+</body>
+</html>
